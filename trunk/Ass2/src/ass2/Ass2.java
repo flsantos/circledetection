@@ -25,4 +25,11 @@ public class Ass2 {
         g.setColor(Color.RED);
         g.drawLine(x1, y1, x2, y2);
     }
+    
+    public static void putcircle(Graphics g, int x, int y, int r){
+        g.drawOval(x-(r/2), y-(r/2), r, r);
+        
+    }
+    
+    
 }
