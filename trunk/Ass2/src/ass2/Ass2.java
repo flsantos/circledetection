@@ -21,15 +21,19 @@ public class Ass2 {
         
     }
     
-    public static void putline(Graphics g, int x1, int y1, int x2, int y2){
-        g.setColor(Color.RED);
+    public static void putline(Graphics g, int x1, int y1, int x2, int y2, Color color){
+        g.setColor(color);
         g.drawLine(x1, y1, x2, y2);
     }
     
     public static void putcircle(Graphics g, int x, int y, int r){
-        g.drawOval(x, y, r, r);
-        
-        
+        g.drawOval(x-r, y-r, 2*r, 2*r);
+    }
+    
+    
+    public static void putpoint(Graphics g, int x,  int y, Color c) {
+    	Ass2.putline(g, x-2, y, x+2, y, c);
+		Ass2.putline(g, x, y-2, x, y+2, c);
     }
     
     

@@ -5,19 +5,25 @@
 package ass2;
 
  
-import java.awt.Graphics;
-import java.awt.geom.Point2D;
-import java.io.*;
-import javax.swing.JFileChooser;
+import java.awt.Color;
+import java.awt.Point;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+
 import Jama.Matrix;
-import java.awt.Point;
 
 /**
  *
@@ -25,9 +31,10 @@ import java.awt.Point;
  */
 public class JFrame extends javax.swing.JFrame {
     
-    Matrix mat;
-    int npoints;
-    ArrayList<Point> listpoints = new ArrayList<Point>();
+    private Matrix matrix;
+    private int minPercentagePoints = 50;
+    private int maxIterations = 1000;
+    private ArrayList<Point> pointList = new ArrayList<Point>(); 
     
     /**
      * Creates new form JFrame
@@ -249,9 +256,8 @@ public class JFrame extends javax.swing.JFrame {
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
         // TODO add your handling code here:
-        npoints = 0;
         desenho.repaint();
-        listpoints.removeAll(listpoints);
+        pointList.removeAll(pointList);
     }//GEN-LAST:event_clearActionPerformed
 
     private void desenhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseClicked
@@ -260,56 +266,60 @@ public class JFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_desenhoMouseClicked
 
     private void desenhoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMousePressed
-        // TODO add your handling code here:
-        desenho.getMousePosition();
- 
-        int x;
-        int y;
-       
-        
-        npoints += evt.getClickCount();
-        x =  evt.getY();
-        texto.setText(Integer.toString(npoints));
-        
         //draw a point
-        Ass2.putline(desenho.getGraphics(), evt.getX()-2, evt.getY(), evt.getX()+2, evt.getY());
-        Ass2.putline(desenho.getGraphics(), evt.getX(), evt.getY()-2, evt.getX(), evt.getY()+2);
-        Ass2.putcircle(desenho.getGraphics(), evt.getX(), evt.getY(),40);
+        Ass2.putpoint(desenho.getGraphics(), evt.getX(), evt.getY(), Color.RED);
+        
         //put point on arraylist
-        listpoints.add(evt.getPoint());
+        pointList.add(evt.getPoint());
         
     }//GEN-LAST:event_desenhoMousePressed
 
     private void ransacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ransacActionPerformed
         // TODO add your handling code here:
-        mat = new Matrix(npoints,2);
-        for(int i = 0; i < listpoints.size(); i++){
-                mat.set(i, 0, listpoints.get(i).x);
-                mat.set(i, 1, listpoints.get(i).y);
-            }
         
-        for (int i=0; i<mat.getRowDimension(); i++)
-        { 
-            for (int j=0;j<mat.getColumnDimension();j++) {
-             System.out.print( mat.get(i, j)+" ");
-            } 
-        System.out.println();
+    	//desenho.removeAll();
+    	
+        removeDuplicates(pointList);
+        
+        matrix = new Matrix(pointList.size(), 2);
+        
+        int i = 0;
+        for (Point p : pointList) {
+        	//Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
+        	matrix.set(i, 0, p.x);
+        	matrix.set(i, 1, p.y);
+        	i++;
         }
-        System.out.println("--------");
-        int N = (int)(Math.random()*listpoints.size());
-        int N1 = (int)(Math.random()*listpoints.size());
-        int N2 = (int)(Math.random()*listpoints.size());
-        texto1.setText(Integer.toString(N));
-        Point p1 = new Point((int)mat.get(N,0), (int)mat.get(N,1));
-        Point p2 = new Point((int)mat.get(N1,0), (int)mat.get(N1,1));
-        Point p3 = new Point((int)mat.get(N2,0), (int)mat.get(N2,1));
-        Circle c = CircleUtil.circleFromPoints(p1, p2, p3);
-        System.out.println(p1);
-        System.out.println(p2);
-        System.out.println(p3);
         
-        System.out.println(c);
-        Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius);
+      
+        int minWidthAnnulus = 0;
+        
+        while (true) {
+        
+	        RansacUtil ransacUtil = new RansacUtil(matrix, maxIterations, minWidthAnnulus, minPercentagePoints);
+	        if (ransacUtil.foundCircle()) {
+	        	ArrayList<Point> points = ransacUtil.getPoints();
+	        	Circle c = ransacUtil.getCircle();
+	
+	        	desenho.getGraphics().setColor(Color.green);
+	        	for (Point p : points) {
+	        		Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.GREEN);
+	        		System.out.println(p);
+	        	}
+	        	
+	        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius);
+	        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius+10);
+	        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius-10);
+	        	
+	        	texto.setText(String.valueOf(minWidthAnnulus));
+	        	break;
+	        }
+        
+	        
+	        minWidthAnnulus++;
+        }
+        
+        
     }//GEN-LAST:event_ransacActionPerformed
 
     private void desenhoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_desenhoFocusGained
@@ -330,41 +340,40 @@ public class JFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_desenhoMouseMoved
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        desenho.repaint();
-        final JFileChooser fc = new JFileChooser();
-        fc.showOpenDialog(this);
-        int i=0;
- 
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new FileReader(fc.getSelectedFile()));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        String line;
-        try {
-            while((line = in.readLine()) != null)
-            {
-              i++;
-              System.out.println(line);
-              String temp[] = line.split(",");
-              try{
-                //draw points
-                Ass2.putline(desenho.getGraphics(),Integer.parseInt(temp[0]), Integer.parseInt(temp[1])-2, Integer.parseInt(temp[0]), Integer.parseInt(temp[1])+2);
-                Ass2.putline(desenho.getGraphics(),Integer.parseInt(temp[0])-2, Integer.parseInt(temp[1]), Integer.parseInt(temp[0])+2, Integer.parseInt(temp[1]));
-                //put points on matrix
-                //...
-                //...
-            
-              } catch(NumberFormatException n){
-                  JOptionPane.showMessageDialog(null, "You have some erro on input file: "+n.getMessage(), "Error on line: "+i, JOptionPane.INFORMATION_MESSAGE, null);
-                  return;
-              }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    	// TODO add your handling code here:
+    	desenho.repaint();
+    	final JFileChooser fc = new JFileChooser();
+    	fc.showOpenDialog(this);
+    	int i=0;
+
+    	BufferedReader in = null;
+    	try {
+    		in = new BufferedReader(new FileReader(fc.getSelectedFile()));
+    	} catch (FileNotFoundException ex) {
+    		Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
+    	}
+    	String line;
+    	try {
+    		while((line = in.readLine()) != null)
+    		{
+    			i++;
+    			System.out.println(line);
+    			String temp[] = line.split(",");
+    			try{
+    				//draw points
+    				Ass2.putpoint(desenho.getGraphics(),Integer.parseInt(temp[0]), Integer.parseInt(temp[1]), Color.RED);
+    				//put points on matrix
+    				//...
+    				//...
+
+    			} catch(NumberFormatException n){
+    				JOptionPane.showMessageDialog(null, "You have some erro on input file: "+n.getMessage(), "Error on line: "+i, JOptionPane.INFORMATION_MESSAGE, null);
+    				return;
+    			}
+    		}
+    	} catch (IOException ex) {
+    		Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
+    	}
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void houghActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_houghActionPerformed
@@ -409,6 +418,23 @@ public class JFrame extends javax.swing.JFrame {
         
         
     }
+    
+    
+    public static void removeDuplicates(List list)  
+    {  
+      Set set = new HashSet();  
+      List newList = new ArrayList();  
+      for (Iterator iter = list.iterator(); iter.hasNext(); ) {  
+        Object element = iter.next();  
+        if (set.add(element))  
+          newList.add(element);  
+      }  
+      list.clear();  
+      list.addAll(newList);  
+    } 
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clear;
     private javax.swing.JPanel desenho;
