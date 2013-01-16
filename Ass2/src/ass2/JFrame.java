@@ -266,6 +266,7 @@ public class JFrame extends javax.swing.JFrame {
         int x;
         int y;
        
+        
         npoints += evt.getClickCount();
         x =  evt.getY();
         texto.setText(Integer.toString(npoints));
