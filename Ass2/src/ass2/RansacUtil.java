@@ -2,17 +2,22 @@ package ass2;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
 
 import Jama.Matrix;
 
 public class RansacUtil {
 	
 	final private static int minRadius = 1;
-	final private static int maxRadius = 100;
+	final private static int maxRadius = 100000000;
+	
+	private Circle circle;
+	private ArrayList<Point> points;
+	private boolean foundCircle = false;
 
-	public static ArrayList<Point> findCircle(Matrix m, int trials, int dth, int percent) {
+	public RansacUtil (Matrix m, int trials, int dth, int percent) {
 		
 		int minPoints = (int)(m.getRowDimension()*percent/100);
 		//sel = []
@@ -29,24 +34,34 @@ public class RansacUtil {
 			while (index3 == index2 || index3 == index1)
 				index3 = random.nextInt(m.getRowDimension());
 			
+			
 			Point p1 = new Point((int)m.get(index1, 0), (int)m.get(index1, 1));
 			Point p2 = new Point((int)m.get(index2, 0), (int)m.get(index2, 1));
 			Point p3 = new Point((int)m.get(index3, 0), (int)m.get(index3, 1));
 			
-			Circle c = CircleUtil.circleFromPoints(p1, p2, p3);
 			
-			if (c.radius >= minRadius && c.radius <= maxRadius) {
+			//points in the same line (det == 0)
+			double[][] auxMatrix = {{p1.x, p1.y, 1}, {p2.x, p2.y, 1}, {p3.x, p3.y, 1}};
+			Matrix matrix = new Matrix(auxMatrix);
+			if (((int)matrix.det()) == 0) {
+				continue; // go to next trial
+			}
+			
+			
+			circle = CircleUtil.circleFromPoints(p1, p2, p3);
+			
+			if (circle.radius >= minRadius && circle.radius <= maxRadius) {
 				Matrix d;
 				double[][] aux = new double[m.getRowDimension()][2];
 				for (int j = 0; j < m.getRowDimension(); j++) {
-					aux[j][0] = c.center.x;
-					aux[j][1] = c.center.y;
+					aux[j][0] = circle.center.x;
+					aux[j][1] = circle.center.y;
 				}
 				d = new Matrix(aux);
 				
 				
 				d = m.minus(d);
-				d = abs(sqrt(sum(multiply(d.transpose(),d.transpose())).transpose()).minus(new Matrix(m.getRowDimension(), 1, c.radius)));
+				d = abs(sqrt(sum(multiply(d.transpose(),d.transpose())).transpose()).minus(new Matrix(m.getRowDimension(), 1, circle.radius)));
 				
 				ArrayList<Integer> indices = new ArrayList<Integer>();
 				for (int k = 0; k < d.getRowDimension(); k++) {
@@ -56,26 +71,31 @@ public class RansacUtil {
 				}
 				
 				
+				points = new ArrayList<Point>();
 				if (indices.size() > minPoints) {
-					ArrayList<Point> points = new ArrayList<Point>();
 					for (Integer ind : indices) {
 						points.add(new Point((int)Math.round(m.get(ind, 0)),(int)Math.round(m.get(ind, 1))));
 					}
-					return points;
+					foundCircle = true;
+					return;
+					//return points;
 				}
 				
 			}
 		}
 		
 		System.out.println("NO SUCH CIRCLE FOUND!!!");
-		return new ArrayList<Point>();
+		//return new ArrayList<Point>();
+		points = new ArrayList<Point>();
+		circle = null;
+		foundCircle = false;
 		
 		
 	}
 	
 	
 	//Multiplication entry-by-entry
-	private static Matrix multiply(Matrix mat1, Matrix mat2) {
+	private Matrix multiply(Matrix mat1, Matrix mat2) {
 		Matrix ret = new Matrix(mat1.getRowDimension(), mat1.getColumnDimension());
 		for (int i = 0; i < mat1.getRowDimension(); i++) {
 			for (int j = 0; j < mat1.getColumnDimension(); j++) {
@@ -85,7 +105,7 @@ public class RansacUtil {
 		return ret;
 	}
 
-	private static Matrix abs(Matrix mat) {
+	private Matrix abs(Matrix mat) {
 		for (int i = 0; i < mat.getRowDimension(); i++) {
 			for (int j = 0; j < mat.getColumnDimension(); j++) {
 				mat.set(i, j, Math.abs(mat.get(i, j)));
@@ -94,7 +114,7 @@ public class RansacUtil {
 		return mat;
 	}
 
-	private static Matrix sqrt(Matrix mat) {
+	private Matrix sqrt(Matrix mat) {
 		for (int i = 0; i < mat.getRowDimension(); i++) {
 			for (int j = 0; j < mat.getColumnDimension(); j++) {
 				mat.set(i, j, Math.sqrt(mat.get(i, j)));
@@ -103,7 +123,7 @@ public class RansacUtil {
 		return mat;
 	}
 
-	private static Matrix sum(Matrix mat) {
+	private Matrix sum(Matrix mat) {
 		Matrix ret = new Matrix(1, mat.getColumnDimension());
 		for (int i = 0; i < mat.getColumnDimension(); i++) {
 			double sum = 0;
@@ -114,6 +134,33 @@ public class RansacUtil {
 		}
 		return ret;
 	}
+
+
+	public Circle getCircle() {
+		return circle;
+	}
+
+
+	public void setCircle(Circle c) {
+		this.circle = c;
+	}
+
+
+	public ArrayList<Point> getPoints() {
+		return points;
+	}
+
+
+	public void setPoints(ArrayList<Point> points) {
+		this.points = points;
+	}
+	
+	
+	public boolean foundCircle() {
+		return foundCircle;
+	}
+	
+	
 
 /*	public static void main(String[] args) {
 		
@@ -126,8 +173,9 @@ public class RansacUtil {
 		}
 		System.out.println();
 		System.out.println();
-		ArrayList<Point> points = findCircle(new Matrix(mat), 100, 10, 80);
-		for (Point p : points) {
+		RansacUtil r = new RansacUtil(new Matrix(mat), 100, 20, 80);
+		
+		for (Point p : r.getPoints()) {
 			System.out.println(p.x + " " + p.y);
 		}
 	}*/
