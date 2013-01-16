@@ -6,7 +6,6 @@ package ass2;
 
  
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.io.*;
 import javax.swing.JFileChooser;
@@ -17,20 +16,26 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import Jama.Matrix;
+import java.awt.Point;
 
 /**
  *
  * @author tiagopereira
  */
 public class JFrame extends javax.swing.JFrame {
-
+    
+    Matrix mat;
+    int npoints;
+    ArrayList<Point> listpoints = new ArrayList<Point>();
+    
     /**
      * Creates new form JFrame
      */
     public JFrame() {
         initComponents();
-        ((Graphics2D)desenho.getGraphics()).scale(1, 1);
         
+       
     }
 
     /**
@@ -58,7 +63,6 @@ public class JFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         texto2 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        canvas1 = new java.awt.Canvas();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,9 +174,8 @@ public class JFrame extends javax.swing.JFrame {
                             .add(jLabel1)
                             .add(jLabel2)
                             .add(jLabel3)
-                            .add(jLabel4)
-                            .add(canvas1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 59, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 50, Short.MAX_VALUE)
+                            .add(jLabel4))))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 55, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .add(ransac, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -219,11 +222,9 @@ public class JFrame extends javax.swing.JFrame {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(texto2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(42, 42, 42)
-                        .add(canvas1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 50, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(texto2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(desenho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -248,8 +249,9 @@ public class JFrame extends javax.swing.JFrame {
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
         // TODO add your handling code here:
-  
+        npoints = 0;
         desenho.repaint();
+        listpoints.removeAll(listpoints);
     }//GEN-LAST:event_clearActionPerformed
 
     private void desenhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseClicked
@@ -264,23 +266,49 @@ public class JFrame extends javax.swing.JFrame {
         int x;
         int y;
        
-        evt.getClickCount();
+        npoints += evt.getClickCount();
         x =  evt.getY();
-        texto.setText(Integer.toString(x));
+        texto.setText(Integer.toString(npoints));
         
         //draw a point
         Ass2.putline(desenho.getGraphics(), evt.getX()-2, evt.getY(), evt.getX()+2, evt.getY());
         Ass2.putline(desenho.getGraphics(), evt.getX(), evt.getY()-2, evt.getX(), evt.getY()+2);
-        //Ass2.putcircle(desenho.getGraphics(), evt.getX(), evt.getY(),40);
-        //put point on matrix
-        //...
-        //...
+        Ass2.putcircle(desenho.getGraphics(), evt.getX(), evt.getY(),40);
+        //put point on arraylist
+        listpoints.add(evt.getPoint());
         
     }//GEN-LAST:event_desenhoMousePressed
 
     private void ransacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ransacActionPerformed
         // TODO add your handling code here:
-
+        mat = new Matrix(npoints,2);
+        for(int i = 0; i < listpoints.size(); i++){
+                mat.set(i, 0, listpoints.get(i).x);
+                mat.set(i, 1, listpoints.get(i).y);
+            }
+        
+        for (int i=0; i<mat.getRowDimension(); i++)
+        { 
+            for (int j=0;j<mat.getColumnDimension();j++) {
+             System.out.print( mat.get(i, j)+" ");
+            } 
+        System.out.println();
+        }
+        System.out.println("--------");
+        int N = (int)(Math.random()*listpoints.size());
+        int N1 = (int)(Math.random()*listpoints.size());
+        int N2 = (int)(Math.random()*listpoints.size());
+        texto1.setText(Integer.toString(N));
+        Point p1 = new Point((int)mat.get(N,0), (int)mat.get(N,1));
+        Point p2 = new Point((int)mat.get(N1,0), (int)mat.get(N1,1));
+        Point p3 = new Point((int)mat.get(N2,0), (int)mat.get(N2,1));
+        Circle c = CircleUtil.circleFromPoints(p1, p2, p3);
+        System.out.println(p1);
+        System.out.println(p2);
+        System.out.println(p3);
+        
+        System.out.println(c);
+        Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius);
     }//GEN-LAST:event_ransacActionPerformed
 
     private void desenhoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_desenhoFocusGained
@@ -295,8 +323,9 @@ public class JFrame extends javax.swing.JFrame {
     private void desenhoMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseMoved
         // TODO add your handling code here:
         //get coordenators of cursor
-        x.setText("x: "+evt.getX());
-        y.setText("y: "+(desenho.getHeight()-evt.getY()));
+        x.setText("x: "+evt.getPoint().x);
+        y.setText("x: "+evt.getPoint().y);
+        //y.setText("y: "+(desenho.getHeight()-evt.getY()));
     }//GEN-LAST:event_desenhoMouseMoved
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -376,9 +405,10 @@ public class JFrame extends javax.swing.JFrame {
             }
         });
         
+        
+        
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Canvas canvas1;
     private javax.swing.JButton clear;
     private javax.swing.JPanel desenho;
     private javax.swing.JButton hough;

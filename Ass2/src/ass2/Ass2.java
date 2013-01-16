@@ -27,7 +27,8 @@ public class Ass2 {
     }
     
     public static void putcircle(Graphics g, int x, int y, int r){
-        g.drawOval(x-(r/2), y-(r/2), r, r);
+        g.drawOval(x, y, r, r);
+        
         
     }
     
