@@ -307,6 +307,16 @@ public class JFrame extends javax.swing.JFrame {
     private void ransacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ransacActionPerformed
         // TODO add your handling code here:
         
+    	try {
+	        minPercentagePoints = Integer.parseInt(minp.getText());
+	        maxIterations = Integer.parseInt(maxit.getText());
+	        maxWidthAnnulus = Integer.parseInt(maxw.getText());
+    	}
+    	catch (Exception e) {
+			msgLabel.setText("Incorrect input.");
+    		return;
+		}
+        
     	//desenho.removeAll();
     	//desenho.repaint();
         removeDuplicates(pointList);
@@ -405,6 +415,8 @@ public class JFrame extends javax.swing.JFrame {
     			i++;
     			System.out.println(line);
     			String temp[] = line.split(",");
+    			temp[0] = temp[0].trim();
+    			temp[1] = temp[1].trim();
     			try{
     				//draw points
     				Ass2.putpoint(desenho.getGraphics(),Integer.parseInt(temp[0]), Integer.parseInt(temp[1]), Color.RED);
