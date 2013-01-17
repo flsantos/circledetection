@@ -164,7 +164,7 @@ public class JFrame extends javax.swing.JFrame {
         jLabel4.setText("Max width annulus:");
 
         msgLabel.setForeground(new java.awt.Color(204, 0, 0));
-        msgLabel.setText("Message:");
+        msgLabel.setText("");
 
         jLabel5.setText("Smallest width annulus:");
 
@@ -313,6 +313,15 @@ public class JFrame extends javax.swing.JFrame {
     	
         removeDuplicates(pointList);
         
+        if (pointList.size() < 3) {
+        	msgLabel.setText("Insufficient amount of points.");
+        	return;
+        }
+        else {
+        	msgLabel.setText("");
+        }
+        
+        
         matrix = new Matrix(pointList.size(), 2);
         
         int i = 0;
@@ -349,10 +358,10 @@ public class JFrame extends javax.swing.JFrame {
         	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius+10);
         	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius-10);
         	
-        	maxit.setText(String.valueOf(minWidthAnnulus*2));
+        	smallannulus.setText(String.valueOf(minWidthAnnulus*2));
         }
         else {
-        	maxit.setText("NOT FOUND!");
+        	smallannulus.setText("--");
         }
         
         
