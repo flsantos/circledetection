@@ -84,10 +84,6 @@ public class RansacUtil {
 			}
 		}
 		
-		System.out.println("NO SUCH CIRCLE FOUND!!!");
-		//return new ArrayList<Point>();
-		points = new ArrayList<Point>();
-		circle = null;
 		foundCircle = false;
 		
 		
