@@ -452,7 +452,6 @@ public class JFrame extends javax.swing.JFrame {
     				//put points on list
     				pointList.add(new Point(x,y));
     				
-
     			} catch(NumberFormatException n){
     				JOptionPane.showMessageDialog(null, "You have some erro on input file: "+n.getMessage(), "Error on line: "+i, JOptionPane.INFORMATION_MESSAGE, null);
     				return;
