@@ -26,7 +26,8 @@ public class Ass2 {
         g.drawLine(x1, y1, x2, y2);
     }
     
-    public static void putcircle(Graphics g, int x, int y, int r){
+    public static void putcircle(Graphics g, int x, int y, int r, Color color){
+    	g.setColor(color);
         g.drawOval(x-r, y-r, 2*r, 2*r);
     }
     

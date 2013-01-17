@@ -6,7 +6,11 @@ package ass2;
 
  
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,8 +24,12 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 
 import Jama.Matrix;
 
@@ -76,7 +84,9 @@ public class JFrame extends javax.swing.JFrame {
         smallannulus = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        pointscircle = new javax.swing.JList();
+        
+        listModel = new DefaultListModel();
+        pointscircle = new javax.swing.JList(listModel);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -174,6 +184,7 @@ public class JFrame extends javax.swing.JFrame {
 
         pointscircle.setEnabled(false);
         jScrollPane1.setViewportView(pointscircle);
+        
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -286,8 +297,11 @@ public class JFrame extends javax.swing.JFrame {
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
         // TODO add your handling code here:
-        desenho.repaint();
         pointList.removeAll(pointList);
+        desenho.removeAll();
+        desenho.repaint();
+        ((DefaultListModel)pointscircle.getModel()).removeAllElements();
+        smallannulus.setText("--");
     }//GEN-LAST:event_clearActionPerformed
 
     private void desenhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseClicked
@@ -306,7 +320,12 @@ public class JFrame extends javax.swing.JFrame {
 
     private void ransacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ransacActionPerformed
         // TODO add your handling code here:
-        
+    	desenho.removeAll();
+    	//desenho.getGraphics().clearRect(0, 0, 300, 300);
+    	//desenho.setBackground(Color.WHITE);
+        desenho.repaint();
+        ((DefaultListModel)pointscircle.getModel()).removeAllElements();
+    	
     	try {
 	        minPercentagePoints = Integer.parseInt(minp.getText());
 	        maxIterations = Integer.parseInt(maxit.getText());
@@ -317,8 +336,6 @@ public class JFrame extends javax.swing.JFrame {
     		return;
 		}
         
-    	//desenho.removeAll();
-    	//desenho.repaint();
         removeDuplicates(pointList);
         
         if (pointList.size() < 3) {
@@ -330,6 +347,7 @@ public class JFrame extends javax.swing.JFrame {
         }
         
         
+        
         matrix = new Matrix(pointList.size(), 2);
         
         int i = 0;
@@ -337,11 +355,11 @@ public class JFrame extends javax.swing.JFrame {
         	matrix.set(i, 0, p.x);
         	matrix.set(i, 1, p.y);
         	i++;
-                Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
+            Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
         }
         
       
-        int minWidthAnnulus = 0;
+        int minWidthAnnulus = 1;
         RansacUtil ransacUtil = null;
         for (i = 0; i < maxWidthAnnulus; i++) {
         
@@ -353,26 +371,36 @@ public class JFrame extends javax.swing.JFrame {
         }
         
         if (ransacUtil.foundCircle()) {
-        	ArrayList<Point> points = ransacUtil.getPoints();
-        	Circle c = ransacUtil.getCircle();
+        	final ArrayList<Point> points = ransacUtil.getPoints();
+        	final Circle c = ransacUtil.getCircle();
+        	final int minWid = minWidthAnnulus;
+        	
 
-        	desenho.getGraphics().setColor(Color.green);
-        	for (Point p : points) {
-        		Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.GREEN);
-        		System.out.println(p);
-        	}
-        	
-        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius);
-        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius+minWidthAnnulus);
-        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius-minWidthAnnulus);
-        	
-        	smallannulus.setText(String.valueOf(minWidthAnnulus*2));
+        	SwingUtilities.invokeLater(new Runnable() {
+        		@Override
+        		public void run() {
+        			for (Point p : pointList) {
+        				Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
+        			}
+
+        			int k = 1;
+        			int d = desenho.getSize().height;
+        			for (Point p : points) {
+        				Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.GREEN);
+        				((DefaultListModel<String>)pointscircle.getModel()).addElement(k+++".("+p.x+","+(d - p.y)+")");
+        			}
+
+        			Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius, Color.BLACK);
+        			Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius+minWid, Color.GRAY);
+        			Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius-minWid, Color.GRAY);
+
+        			smallannulus.setText(String.valueOf(minWid*2));
+        		}
+        	});
         }
         else {
         	smallannulus.setText("--");
         }
-        
-        
         
     }//GEN-LAST:event_ransacActionPerformed
 
@@ -386,11 +414,9 @@ public class JFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_desenhoMouseEntered
 
     private void desenhoMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseMoved
-        // TODO add your handling code here:
-        //get coordenators of cursor
+        //get coordinates of cursor
         x.setText("x: "+evt.getPoint().x);
-        y.setText("y: "+evt.getPoint().y);
-        //y.setText("y: "+(desenho.getHeight()-evt.getY()));
+        y.setText("y: "+(desenho.getSize().getHeight() - evt.getPoint().y));
     }//GEN-LAST:event_desenhoMouseMoved
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -417,12 +443,14 @@ public class JFrame extends javax.swing.JFrame {
     			String temp[] = line.split(",");
     			temp[0] = temp[0].trim();
     			temp[1] = temp[1].trim();
+    			int x = Integer.parseInt(temp[0]);
+    			int y = (desenho.getSize().height - Integer.parseInt(temp[1]));
     			try{
     				//draw points
-    				Ass2.putpoint(desenho.getGraphics(),Integer.parseInt(temp[0]), Integer.parseInt(temp[1]), Color.RED);
+    				//Ass2.putpoint(desenho.getGraphics(), x, y, Color.RED);
     				
     				//put points on list
-    				pointList.add(new Point(Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
+    				pointList.add(new Point(x,y));
     				
 
     			} catch(NumberFormatException n){
@@ -433,6 +461,16 @@ public class JFrame extends javax.swing.JFrame {
     	} catch (IOException ex) {
     		Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
     	}
+    	
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				for(Point p :pointList) {
+					Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
+				}
+			}
+		});
+    	
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void houghActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_houghActionPerformed
@@ -467,12 +505,7 @@ public class JFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFrame().setVisible(true);
-                
-            }
-        });
+        new JFrame().setVisible(true);
         
         
         
@@ -513,6 +546,7 @@ public class JFrame extends javax.swing.JFrame {
     private javax.swing.JTextField minp;
     private javax.swing.JLabel msgLabel;
     private javax.swing.JList pointscircle;
+    private DefaultListModel listModel;
     private javax.swing.JButton ransac;
     private javax.swing.JLabel smallannulus;
     private javax.swing.JLabel x;
