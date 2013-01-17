@@ -34,6 +34,7 @@ public class JFrame extends javax.swing.JFrame {
     private Matrix matrix;
     private int minPercentagePoints = 50;
     private int maxIterations = 1000;
+    private int maxWidthAnnulus = 300;
     private ArrayList<Point> pointList = new ArrayList<Point>(); 
     
     /**
@@ -293,31 +294,36 @@ public class JFrame extends javax.swing.JFrame {
         
       
         int minWidthAnnulus = 0;
+        RansacUtil ransacUtil = null;
+        for (i = 0; i < maxWidthAnnulus; i++) {
         
-        while (true) {
-        
-	        RansacUtil ransacUtil = new RansacUtil(matrix, maxIterations, minWidthAnnulus, minPercentagePoints);
+	        ransacUtil = new RansacUtil(matrix, maxIterations, minWidthAnnulus, minPercentagePoints);
 	        if (ransacUtil.foundCircle()) {
-	        	ArrayList<Point> points = ransacUtil.getPoints();
-	        	Circle c = ransacUtil.getCircle();
-	
-	        	desenho.getGraphics().setColor(Color.green);
-	        	for (Point p : points) {
-	        		Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.GREEN);
-	        		System.out.println(p);
-	        	}
-	        	
-	        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius);
-	        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius+10);
-	        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius-10);
-	        	
-	        	texto.setText(String.valueOf(minWidthAnnulus));
 	        	break;
 	        }
-        
-	        
 	        minWidthAnnulus++;
         }
+        
+        if (ransacUtil.foundCircle()) {
+        	ArrayList<Point> points = ransacUtil.getPoints();
+        	Circle c = ransacUtil.getCircle();
+
+        	desenho.getGraphics().setColor(Color.green);
+        	for (Point p : points) {
+        		Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.GREEN);
+        		System.out.println(p);
+        	}
+        	
+        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius);
+        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius+10);
+        	Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius-10);
+        	
+        	texto.setText(String.valueOf(minWidthAnnulus*2));
+        }
+        else {
+        	texto.setText("NOT FOUND!");
+        }
+        
         
         
     }//GEN-LAST:event_ransacActionPerformed
@@ -345,6 +351,8 @@ public class JFrame extends javax.swing.JFrame {
     	final JFileChooser fc = new JFileChooser();
     	fc.showOpenDialog(this);
     	int i=0;
+    	
+    	pointList = new ArrayList<Point>();
 
     	BufferedReader in = null;
     	try {
@@ -362,9 +370,10 @@ public class JFrame extends javax.swing.JFrame {
     			try{
     				//draw points
     				Ass2.putpoint(desenho.getGraphics(),Integer.parseInt(temp[0]), Integer.parseInt(temp[1]), Color.RED);
-    				//put points on matrix
-    				//...
-    				//...
+    				
+    				//put points on list
+    				pointList.add(new Point(Integer.parseInt(temp[0]), Integer.parseInt(temp[1])));
+    				
 
     			} catch(NumberFormatException n){
     				JOptionPane.showMessageDialog(null, "You have some erro on input file: "+n.getMessage(), "Error on line: "+i, JOptionPane.INFORMATION_MESSAGE, null);
