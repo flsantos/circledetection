@@ -361,6 +361,8 @@ public class JFrame extends javax.swing.JFrame {
       
         int minWidthAnnulus = 1;
         RansacUtil ransacUtil = null;
+        
+        
         for (i = 0; i < maxWidthAnnulus; i++) {
         
 	        ransacUtil = new RansacUtil(matrix, maxIterations, minWidthAnnulus, minPercentagePoints);
