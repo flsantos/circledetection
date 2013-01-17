@@ -416,7 +416,7 @@ public class JFrame extends javax.swing.JFrame {
     private void desenhoMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseMoved
         //get coordinates of cursor
         x.setText("x: "+evt.getPoint().x);
-        y.setText("y: "+(desenho.getSize().getHeight() - evt.getPoint().y));
+        y.setText("y: "+(int)((desenho.getSize().getHeight() - evt.getPoint().y)));
     }//GEN-LAST:event_desenhoMouseMoved
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
