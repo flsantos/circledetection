@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import Jama.Matrix;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 /**
  *
@@ -97,6 +98,17 @@ public class JFrame extends javax.swing.JFrame {
         pointscircle1 = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
+            }
+        });
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
 
         ransac.setText("COMPUTE");
         ransac.addActionListener(new java.awt.event.ActionListener() {
@@ -738,6 +750,20 @@ public class JFrame extends javax.swing.JFrame {
     private void numCirclesTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numCirclesTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_numCirclesTextActionPerformed
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        // TOD
+        if (pointscircle.getModel() instanceof DefaultListModel) {
+            clearActionPerformed(null);
+            System.out.println(jTabbedPane1.getSelectedIndex());
+        }
+        
+    }//GEN-LAST:event_jTabbedPane1StateChanged
 
     /**
      * @param args the command line arguments
