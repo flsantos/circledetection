@@ -43,8 +43,8 @@ public class JFrame extends javax.swing.JFrame {
      */
     public JFrame() {
         initComponents();
-        
-       
+        listModel = new DefaultListModel();
+        pointscircle.setModel(listModel);
     }
 
     /**
@@ -77,9 +77,7 @@ public class JFrame extends javax.swing.JFrame {
         smallannulus = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        
-        listModel = new DefaultListModel();
-        pointscircle = new javax.swing.JList(listModel);
+        pointscircle = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -384,7 +382,7 @@ public class JFrame extends javax.swing.JFrame {
         			int d = desenho.getSize().height;
         			for (Point p : points) {
         				Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.GREEN);
-        				((DefaultListModel<String>)pointscircle.getModel()).addElement(k+++".("+p.x+","+(d - p.y)+")");
+        				((DefaultListModel)pointscircle.getModel()).addElement(k+++".("+p.x+","+(d - p.y)+")");
         			}
 
         			Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius, Color.BLACK);
@@ -532,7 +530,7 @@ public class JFrame extends javax.swing.JFrame {
       list.clear();  
       list.addAll(newList);  
     } 
-    
+    private DefaultListModel listModel;
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -554,7 +552,6 @@ public class JFrame extends javax.swing.JFrame {
     private javax.swing.JTextField minp;
     private javax.swing.JLabel msgLabel;
     private javax.swing.JList pointscircle;
-    private DefaultListModel listModel;
     private javax.swing.JButton ransac;
     private javax.swing.JLabel smallannulus;
     private javax.swing.JLabel x;
