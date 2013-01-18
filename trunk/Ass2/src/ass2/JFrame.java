@@ -6,11 +6,7 @@ package ass2;
 
  
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
 import java.awt.Point;
-import java.awt.geom.AffineTransform;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,15 +16,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 
 import Jama.Matrix;
@@ -43,16 +36,14 @@ public class JFrame extends javax.swing.JFrame {
     private int minPercentagePoints = 50;
     private int maxIterations = 1000;
     private int maxWidthAnnulus = 300;
-    private ArrayList<Point> pointList = new ArrayList<Point>();
-    private ArrayList<Point> pointListhough = new ArrayList<Point>();
-    private DefaultListModel listModel;
+    private ArrayList<Point> pointList = new ArrayList<Point>(); 
+    
     /**
      * Creates new form JFrame
      */
     public JFrame() {
         initComponents();
-        listModel = new DefaultListModel();
-        pointscircle = new javax.swing.JList(listModel);
+        
        
     }
 
@@ -65,7 +56,6 @@ public class JFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         ransac = new javax.swing.JButton();
         desenho = new javax.swing.JPanel();
@@ -74,6 +64,9 @@ public class JFrame extends javax.swing.JFrame {
         x = new javax.swing.JLabel();
         y = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        hough = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         minp = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -84,16 +77,13 @@ public class JFrame extends javax.swing.JFrame {
         smallannulus = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        pointscircle = new javax.swing.JList();
-        jButton2 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        hough = new javax.swing.JButton();
-        accumulate = new javax.swing.JPanel();
-        desenhoh = new javax.swing.JPanel();
+        
+        listModel = new DefaultListModel();
+        pointscircle = new javax.swing.JList(listModel);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        ransac.setText("COMPUTE");
+        ransac.setText("RANSAC");
         ransac.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ransacActionPerformed(evt);
@@ -127,7 +117,7 @@ public class JFrame extends javax.swing.JFrame {
         desenho.setLayout(desenhoLayout);
         desenhoLayout.setHorizontalGroup(
             desenhoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 513, Short.MAX_VALUE)
+            .add(0, 473, Short.MAX_VALUE)
         );
         desenhoLayout.setVerticalGroup(
             desenhoLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -150,6 +140,20 @@ public class JFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Coordinates");
 
+        jButton2.setText("Browse file...");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        hough.setText("Hough transform");
+        hough.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                houghActionPerformed(evt);
+            }
+        });
+
         jLabel1.setText("Max Iterations:");
 
         minp.setColumns(5);
@@ -163,7 +167,7 @@ public class JFrame extends javax.swing.JFrame {
         jLabel4.setText("Max width annulus:");
 
         msgLabel.setForeground(new java.awt.Color(204, 0, 0));
-        msgLabel.setText("Message:");
+        msgLabel.setText("");
 
         jLabel5.setText("Smallest width annulus:");
 
@@ -173,13 +177,7 @@ public class JFrame extends javax.swing.JFrame {
 
         pointscircle.setEnabled(false);
         jScrollPane1.setViewportView(pointscircle);
-
-        jButton2.setText("Browse file...");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -187,56 +185,66 @@ public class JFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(maxit, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(minp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(maxw, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(maxit, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(minp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(maxw, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(jPanel1Layout.createSequentialGroup()
-                                        .add(x, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(y, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                    .add(jLabel1)
-                                    .add(jLabel2)
-                                    .add(jLabel3)
-                                    .add(jLabel4))))
-                        .add(0, 0, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(jButton2)
-                            .add(ransac, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(x, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(y, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(jLabel1)
+                            .add(jLabel2)
+                            .add(jLabel3)
+                            .add(jLabel4))))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(msgLabel)
-                    .add(desenho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jLabel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 260, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(smallannulus)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel5)
-                    .add(clear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .add(ransac, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(18, 18, 18)
+                                .add(hough, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(94, 94, 94))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, desenho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 260, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(smallannulus)
+                            .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabel5)))))
+            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                .add(clear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 763, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(desenho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jLabel5)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(smallannulus)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel6)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 173, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(hough, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(clear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(ransac, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                        .add(desenho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jPanel1Layout.createSequentialGroup()
+                            .add(jLabel5)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(smallannulus)
+                            .add(18, 18, 18)
+                            .add(jLabel6)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(jScrollPane1)))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jLabel2)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -254,84 +262,11 @@ public class JFrame extends javax.swing.JFrame {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(maxw, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(ransac, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(maxw, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(msgLabel)
-                    .add(jButton2))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .add(msgLabel)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
-
-        jTabbedPane1.addTab("RANSAC", jPanel1);
-
-        hough.setText("Hough transform");
-        hough.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                houghActionPerformed(evt);
-            }
-        });
-
-        accumulate.setBackground(new java.awt.Color(51, 51, 51));
-
-        org.jdesktop.layout.GroupLayout accumulateLayout = new org.jdesktop.layout.GroupLayout(accumulate);
-        accumulate.setLayout(accumulateLayout);
-        accumulateLayout.setHorizontalGroup(
-            accumulateLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 300, Short.MAX_VALUE)
-        );
-        accumulateLayout.setVerticalGroup(
-            accumulateLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 260, Short.MAX_VALUE)
-        );
-
-        desenhoh.setBackground(new java.awt.Color(255, 255, 255));
-        desenhoh.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                desenhohMousePressed(evt);
-            }
-        });
-
-        org.jdesktop.layout.GroupLayout desenhohLayout = new org.jdesktop.layout.GroupLayout(desenhoh);
-        desenhoh.setLayout(desenhohLayout);
-        desenhohLayout.setHorizontalGroup(
-            desenhohLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 300, Short.MAX_VALUE)
-        );
-        desenhohLayout.setVerticalGroup(
-            desenhohLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 260, Short.MAX_VALUE)
-        );
-
-        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(hough, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(38, 38, 38))
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
-                .add(59, 59, 59)
-                .add(desenhoh, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(accumulate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(245, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(hough, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(accumulate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(desenhoh, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(49, 49, 49))
-        );
-
-        jTabbedPane1.addTab("Hough transform", jPanel2);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -339,71 +274,19 @@ public class JFrame extends javax.swing.JFrame {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 838, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 777, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 407, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        desenho.repaint();
-        final JFileChooser fc = new JFileChooser();
-        fc.showOpenDialog(this);
-        int i=0;
-
-        pointList = new ArrayList<Point>();
-
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new FileReader(fc.getSelectedFile()));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        String line;
-        try {
-            while((line = in.readLine()) != null)
-            {
-                i++;
-                System.out.println(line);
-                String temp[] = line.split(",");
-                temp[0] = temp[0].trim();
-                temp[1] = temp[1].trim();
-                int x = Integer.parseInt(temp[0]);
-                int y = (desenho.getSize().height - Integer.parseInt(temp[1]));
-                try{
-                    //draw points
-                    //Ass2.putpoint(desenho.getGraphics(), x, y, Color.RED);
-
-                    //put points on list
-                    pointList.add(new Point(x,y));
-
-                } catch(NumberFormatException n){
-                    JOptionPane.showMessageDialog(null, "You have some erro on input file: "+n.getMessage(), "Error on line: "+i, JOptionPane.INFORMATION_MESSAGE, null);
-                    return;
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                for(Point p :pointList) {
-                    Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
-                }
-            }
-        });
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
         // TODO add your handling code here:
@@ -414,9 +297,118 @@ public class JFrame extends javax.swing.JFrame {
         smallannulus.setText("--");
     }//GEN-LAST:event_clearActionPerformed
 
+    private void desenhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_desenhoMouseClicked
+
+    private void desenhoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMousePressed
+        //draw a point
+        Ass2.putpoint(desenho.getGraphics(), evt.getX(), evt.getY(), Color.RED);
+        
+       // Ass2.putcircle(desenho.getGraphics(), evt.getX(), evt.getY(), 50, Color.BLACK);
+        
+        //put point on arraylist
+        pointList.add(evt.getPoint());
+        
+    }//GEN-LAST:event_desenhoMousePressed
+
+    private void ransacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ransacActionPerformed
+        // TODO add your handling code here:
+    	desenho.removeAll();
+    	//desenho.getGraphics().clearRect(0, 0, 300, 300);
+    	//desenho.setBackground(Color.WHITE);
+        desenho.repaint();
+        ((DefaultListModel)pointscircle.getModel()).removeAllElements();
+    	
+    	try {
+	        minPercentagePoints = Integer.parseInt(minp.getText());
+	        maxIterations = Integer.parseInt(maxit.getText());
+	        maxWidthAnnulus = Integer.parseInt(maxw.getText());
+    	}
+    	catch (Exception e) {
+			msgLabel.setText("Incorrect input.");
+    		return;
+		}
+        
+        removeDuplicates(pointList);
+        
+        if (pointList.size() < 3) {
+        	msgLabel.setText("Insufficient amount of points.");
+        	return;
+        }
+        else {
+        	msgLabel.setText("");
+        }
+        
+        
+        
+        matrix = new Matrix(pointList.size(), 2);
+        
+        int i = 0;
+        for (Point p : pointList) {
+        	matrix.set(i, 0, p.x);
+        	matrix.set(i, 1, p.y);
+        	i++;
+            Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
+        }
+        
+      
+        int minWidthAnnulus = 1;
+        RansacUtil ransacUtil = null;
+        
+        
+        for (i = 0; i < maxWidthAnnulus; i++) {
+        
+	        ransacUtil = new RansacUtil(matrix, maxIterations, minWidthAnnulus, minPercentagePoints);
+	        if (ransacUtil.foundCircle()) {
+	        	break;
+	        }
+	        minWidthAnnulus++;
+        }
+        
+        if (ransacUtil.foundCircle()) {
+        	final ArrayList<Point> points = ransacUtil.getPoints();
+        	final Circle c = ransacUtil.getCircle();
+        	final int minWid = minWidthAnnulus;
+        	
+
+        	SwingUtilities.invokeLater(new Runnable() {
+        		@Override
+        		public void run() {
+        			for (Point p : pointList) {
+        				Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
+        			}
+
+        			int k = 1;
+        			int d = desenho.getSize().height;
+        			for (Point p : points) {
+        				Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.GREEN);
+        				((DefaultListModel<String>)pointscircle.getModel()).addElement(k+++".("+p.x+","+(d - p.y)+")");
+        			}
+
+        			Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius, Color.BLACK);
+        			Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius+minWid, Color.GRAY);
+        			Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius-minWid, Color.GRAY);
+
+        			smallannulus.setText(String.valueOf(minWid*2));
+        		}
+        	});
+        }
+        else {
+        	smallannulus.setText("--");
+        }
+        
+    }//GEN-LAST:event_ransacActionPerformed
+
     private void desenhoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_desenhoFocusGained
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_desenhoFocusGained
+
+    private void desenhoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_desenhoMouseEntered
 
     private void desenhoMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseMoved
         //get coordinates of cursor
@@ -424,121 +416,74 @@ public class JFrame extends javax.swing.JFrame {
         y.setText("y: "+(int)((desenho.getSize().getHeight() - evt.getPoint().y)));
     }//GEN-LAST:event_desenhoMouseMoved
 
-    private void desenhoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_desenhoMouseEntered
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    	// TODO add your handling code here:
+    	desenho.repaint();
+    	final JFileChooser fc = new JFileChooser();
+    	fc.showOpenDialog(this);
+    	int i=0;
+    	
+    	pointList = new ArrayList<Point>();
 
-    private void desenhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_desenhoMouseClicked
-
-    private void desenhoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhoMousePressed
-        //draw a point
-        Ass2.putpoint(desenho.getGraphics(), evt.getX(), evt.getY(), Color.RED);
-
-        //put point on arraylist
-        pointList.add(evt.getPoint());
-    }//GEN-LAST:event_desenhoMousePressed
-
-    private void ransacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ransacActionPerformed
-        // TODO add your handling code here:
-        desenho.removeAll();
-        //desenho.getGraphics().clearRect(0, 0, 300, 300);
-        //desenho.setBackground(Color.WHITE);
-        desenho.repaint();
-        ((DefaultListModel)pointscircle.getModel()).removeAllElements();
-
-        try {
-            minPercentagePoints = Integer.parseInt(minp.getText());
-            maxIterations = Integer.parseInt(maxit.getText());
-            maxWidthAnnulus = Integer.parseInt(maxw.getText());
-        }
-        catch (Exception e) {
-            msgLabel.setText("Incorrect input.");
-            return;
-        }
-
-        removeDuplicates(pointList);
-
-        if (pointList.size() < 3) {
-            msgLabel.setText("Insufficient amount of points.");
-            return;
-        }
-        else {
-            msgLabel.setText("");
-        }
-
-        matrix = new Matrix(pointList.size(), 2);
-
-        int i = 0;
-        for (Point p : pointList) {
-            matrix.set(i, 0, p.x);
-            matrix.set(i, 1, p.y);
-            i++;
-            Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
-        }
-
-        int minWidthAnnulus = 1;
-        RansacUtil ransacUtil = null;
-
-        for (i = 0; i < maxWidthAnnulus; i++) {
-
-            ransacUtil = new RansacUtil(matrix, maxIterations, minWidthAnnulus, minPercentagePoints);
-            if (ransacUtil.foundCircle()) {
-                break;
-            }
-            minWidthAnnulus++;
-        }
-
-        if (ransacUtil.foundCircle()) {
-            final ArrayList<Point> points = ransacUtil.getPoints();
-            final Circle c = ransacUtil.getCircle();
-            final int minWid = minWidthAnnulus;
-
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    for (Point p : pointList) {
-                        Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
-                    }
-
-                    int k = 1;
-                    int d = desenho.getSize().height;
-                    for (Point p : points) {
-                        Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.GREEN);
-                        ((DefaultListModel)pointscircle.getModel()).addElement(k+++".("+p.x+","+(d - p.y)+")");
-                    }
-
-                    Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius, Color.BLACK);
-                    Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius+minWid, Color.GRAY);
-                    Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius-minWid, Color.GRAY);
-
-                    smallannulus.setText(String.valueOf(minWid*2));
-                }
-            });
-        }
-        else {
-            smallannulus.setText("--");
-        }
-    }//GEN-LAST:event_ransacActionPerformed
+    	BufferedReader in = null;
+    	try {
+    		in = new BufferedReader(new FileReader(fc.getSelectedFile()));
+    	} catch (FileNotFoundException ex) {
+    		Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
+    	}
+    	String line;
+    	try {
+    		while((line = in.readLine()) != null)
+    		{
+    			i++;
+    			System.out.println(line);
+    			String temp[] = line.split(",");
+    			temp[0] = temp[0].trim();
+    			temp[1] = temp[1].trim();
+    			int x = Integer.parseInt(temp[0]);
+    			int y = (desenho.getSize().height - Integer.parseInt(temp[1]));
+    			try{
+    				//draw points
+    				//Ass2.putpoint(desenho.getGraphics(), x, y, Color.RED);
+    				
+    				//put points on list
+    				pointList.add(new Point(x,y));
+    				
+    			} catch(NumberFormatException n){
+    				JOptionPane.showMessageDialog(null, "You have some erro on input file: "+n.getMessage(), "Error on line: "+i, JOptionPane.INFORMATION_MESSAGE, null);
+    				return;
+    			}
+    		}
+    	} catch (IOException ex) {
+    		Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
+    	}
+    	
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				for(Point p :pointList) {
+					Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
+				}
+			}
+		});
+    	
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void houghActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_houghActionPerformed
-        // TODO add your handling code here:
-        for (Point p : pointListhough) {
-            Ass2.putcircle(accumulate.getGraphics(), p.x, p.y, 10, Color.LIGHT_GRAY);
-            //Ass2.putpoint(desenhoh.getGraphics(), p.x, p.y, Color.RED);
-        }
-    }//GEN-LAST:event_houghActionPerformed
 
-    private void desenhohMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenhohMousePressed
-        // TODO add your handling code here:
-        //draw a point
-        Ass2.putpoint(desenhoh.getGraphics(), evt.getX(), evt.getY(), Color.RED);
-       
-        Ass2.putcircle(accumulate.getGraphics(), evt.getX(), evt.getY(), 10, Color.LIGHT_GRAY);
-        //put point on arraylist
-        pointListhough.add(evt.getPoint());
-    }//GEN-LAST:event_desenhohMousePressed
+    	HoughTransformUtil hough = new HoughTransformUtil(pointList, desenho.getSize().height, desenho.getSize().width, 50, 4);
+    	
+    	ArrayList<Circle> circles = hough.getCircles();
+    	
+    	if (circles.size() > 0) {
+    		for (Circle c : circles) {
+    			Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius, Color.GREEN);
+    		}
+    	}
+    	else {
+    		msgLabel.setText("Circulo não encontrado");
+    	}
+    }//GEN-LAST:event_houghActionPerformed
 
     /**
      * @param args the command line arguments
@@ -591,10 +536,8 @@ public class JFrame extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel accumulate;
     private javax.swing.JButton clear;
     private javax.swing.JPanel desenho;
-    private javax.swing.JPanel desenhoh;
     private javax.swing.JButton hough;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -604,14 +547,14 @@ public class JFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField maxit;
     private javax.swing.JTextField maxw;
     private javax.swing.JTextField minp;
     private javax.swing.JLabel msgLabel;
     private javax.swing.JList pointscircle;
+    private DefaultListModel listModel;
     private javax.swing.JButton ransac;
     private javax.swing.JLabel smallannulus;
     private javax.swing.JLabel x;
