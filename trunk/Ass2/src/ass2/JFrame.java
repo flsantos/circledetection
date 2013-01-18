@@ -498,6 +498,7 @@ public class JFrame extends javax.swing.JFrame {
         
         //put point on arraylist
         pointList.add(evt.getPoint());
+        System.out.println(evt.getX()+","+evt.getY());
         
     }//GEN-LAST:event_desenhoMousePressed
 
@@ -665,6 +666,7 @@ public class JFrame extends javax.swing.JFrame {
         
         //put point on arraylist
         pointList.add(evt.getPoint());
+        System.out.println(evt.getX()+","+evt.getY());
     }//GEN-LAST:event_desenho1MousePressed
 
     private void desenho1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenho1MouseClicked
@@ -686,6 +688,7 @@ public class JFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_desenho1FocusGained
 
     private void clear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1ActionPerformed
+    	pointList = new ArrayList<Point>();
         desenho1.removeAll();
         desenho1.repaint();
         msgLabel.setText("");
