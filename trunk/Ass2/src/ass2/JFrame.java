@@ -46,6 +46,8 @@ public class JFrame extends javax.swing.JFrame {
         initComponents();
         listModel = new DefaultListModel();
         pointscircle.setModel(listModel);
+        listModel1 = new DefaultListModel();
+        pointscircle1.setModel(listModel1);
     }
 
     /**
@@ -195,7 +197,7 @@ public class JFrame extends javax.swing.JFrame {
         jLabel4.setText("Max width annulus:");
 
         msgLabel.setForeground(new java.awt.Color(204, 0, 0));
-        msgLabel.setText("Message:");
+        msgLabel.setText("");
 
         jLabel5.setText("Smallest width annulus:");
 
@@ -372,7 +374,7 @@ public class JFrame extends javax.swing.JFrame {
         jLabel9.setText("Radius:");
 
         msgLabel1.setForeground(new java.awt.Color(204, 0, 0));
-        msgLabel1.setText("Message:");
+        msgLabel1.setText("");
 
         jLabel12.setText("Points in the circle:");
 
@@ -478,6 +480,7 @@ public class JFrame extends javax.swing.JFrame {
         pointList.removeAll(pointList);
         desenho.removeAll();
         desenho.repaint();
+        msgLabel.setText("");
         ((DefaultListModel)pointscircle.getModel()).removeAllElements();
         smallannulus.setText("--");
     }//GEN-LAST:event_clearActionPerformed
@@ -621,7 +624,7 @@ public class JFrame extends javax.swing.JFrame {
     		while((line = in.readLine()) != null)
     		{
     			i++;
-    			System.out.println(line);
+    			//System.out.println(line);
     			String temp[] = line.split(",");
     			temp[0] = temp[0].trim();
     			temp[1] = temp[1].trim();
@@ -683,11 +686,10 @@ public class JFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_desenho1FocusGained
 
     private void clear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1ActionPerformed
-        pointList.removeAll(pointList);
-        desenho.removeAll();
-        desenho.repaint();
-        ((DefaultListModel)pointscircle.getModel()).removeAllElements();
-        smallannulus.setText("--");
+        desenho1.removeAll();
+        desenho1.repaint();
+        msgLabel.setText("");
+        ((DefaultListModel)pointscircle1.getModel()).removeAllElements();
     }//GEN-LAST:event_clear1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -743,18 +745,69 @@ public class JFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void hough1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hough1ActionPerformed
-        HoughTransformUtil hough = new HoughTransformUtil(pointList, desenho1.getSize().height, desenho1.getSize().width, 50, 4);
+    	msgLabel1.setText("");
     	
-    	ArrayList<Circle> circles = hough.getCircles();
     	
-    	if (circles.size() > 0) {
-    		for (Circle c : circles) {
-    			Ass2.putcircle(desenho1.getGraphics(), c.center.x, c.center.y, (int)c.radius, Color.GREEN);
+    	desenho1.removeAll();
+    	//desenho.getGraphics().clearRect(0, 0, 300, 300);
+    	//desenho.setBackground(Color.WHITE);
+        desenho1.repaint();
+        ((DefaultListModel)pointscircle1.getModel()).removeAllElements();
+    	
+        removeDuplicates(pointList);
+        
+        if (pointList.size() < 3) {
+        	msgLabel.setText("Insufficient amount of points.");
+        	return;
+        }
+        else {
+        	msgLabel.setText("");
+        }
+        
+        
+        int r = 0;
+    	int nCircles = 0;
+        try {
+        	r = Integer.parseInt(radiusText.getText());
+        	nCircles = Integer.parseInt(numCirclesText.getText());
+    	}
+    	catch (Exception e) {
+			msgLabel.setText("Incorrect input.");
+    		return;
+		}
+    	
+        HoughTransformUtil hough = new HoughTransformUtil(pointList, desenho1.getSize().height, desenho1.getSize().width, r, nCircles);
+    	
+    	final ArrayList<Circle> circles = hough.getCircles();
+    	final int nCirc = nCircles;
+    	
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+
+    			if (circles.size() == 0) {
+    				msgLabel1.setText("No circles found!");
+    			}
+    			else {
+    				for (Point p : pointList) {
+    					Ass2.putpoint(desenho1.getGraphics(), p.x, p.y, Color.RED);
+    				}
+
+    				int k = 1;
+    				int d = desenho1.getSize().height;
+    				for (Circle c : circles) {
+    					Ass2.putcircle(desenho1.getGraphics(), c.center.x, c.center.y, (int)c.radius, Color.GREEN);
+    					((DefaultListModel)pointscircle1.getModel()).addElement(k+++".("+c.center.x+","+(d - c.center.y)+")");
+    				}
+    				
+    				
+    			}
     		}
-    	}
-    	else {
-    		msgLabel1.setText("Circulo n�o encontrado");
-    	}
+    	});
+    	
+    	if (circles.size() < nCirc) {
+			msgLabel1.setText("Only " +circles.size()+ " circles found!");
+		}
     }//GEN-LAST:event_hough1ActionPerformed
 
     private void numCirclesTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numCirclesTextActionPerformed
@@ -770,7 +823,9 @@ public class JFrame extends javax.swing.JFrame {
         // TOD
         if (pointscircle.getModel() instanceof DefaultListModel) {
             clearActionPerformed(null);
-            System.out.println(jTabbedPane1.getSelectedIndex());
+        }
+        if (pointscircle1.getModel() instanceof DefaultListModel) {
+            clear1ActionPerformed(null);
         }
         
     }//GEN-LAST:event_jTabbedPane1StateChanged
@@ -812,6 +867,7 @@ public class JFrame extends javax.swing.JFrame {
       list.addAll(newList);  
     } 
     private DefaultListModel listModel;
+    private DefaultListModel listModel1;
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
