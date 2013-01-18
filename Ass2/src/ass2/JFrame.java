@@ -56,6 +56,7 @@ public class JFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         ransac = new javax.swing.JButton();
         desenho = new javax.swing.JPanel();
@@ -66,7 +67,6 @@ public class JFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        hough = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         minp = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -78,10 +78,27 @@ public class JFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         pointscircle = new javax.swing.JList();
+        jPanel2 = new javax.swing.JPanel();
+        desenho1 = new javax.swing.JPanel();
+        numCirclesText = new javax.swing.JTextField();
+        clear1 = new javax.swing.JButton();
+        x1 = new javax.swing.JLabel();
+        y1 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
+        hough1 = new javax.swing.JButton();
+        numCircles = new javax.swing.JLabel();
+        radiusText = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        msgLabel1 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        pointscircle1 = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        ransac.setText("RANSAC");
+        ransac.setText("COMPUTE");
         ransac.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ransacActionPerformed(evt);
@@ -145,13 +162,6 @@ public class JFrame extends javax.swing.JFrame {
             }
         });
 
-        hough.setText("Hough transform");
-        hough.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                houghActionPerformed(evt);
-            }
-        });
-
         jLabel1.setText("Max Iterations:");
 
         minp.setColumns(5);
@@ -165,7 +175,7 @@ public class JFrame extends javax.swing.JFrame {
         jLabel4.setText("Max width annulus:");
 
         msgLabel.setForeground(new java.awt.Color(204, 0, 0));
-        msgLabel.setText("");
+        msgLabel.setText("Message:");
 
         jLabel5.setText("Smallest width annulus:");
 
@@ -175,7 +185,6 @@ public class JFrame extends javax.swing.JFrame {
 
         pointscircle.setEnabled(false);
         jScrollPane1.setViewportView(pointscircle);
-        
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -202,13 +211,7 @@ public class JFrame extends javax.swing.JFrame {
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(msgLabel)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .add(ransac, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
-                                .add(hough, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(94, 94, 94))
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, desenho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(desenho, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jLabel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 260, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -216,7 +219,10 @@ public class JFrame extends javax.swing.JFrame {
                             .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(jLabel5)))))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                .add(clear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jPanel1Layout.createSequentialGroup()
+                    .add(ransac, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(171, 171, 171)
+                    .add(clear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 763, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -225,10 +231,9 @@ public class JFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(hough, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(clear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(ransac, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(clear, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(ransac, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -266,21 +271,181 @@ public class JFrame extends javax.swing.JFrame {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
+        jTabbedPane1.addTab("RANSAC", jPanel1);
+
+        desenho1.setBackground(new java.awt.Color(255, 255, 255));
+        desenho1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                desenho1MousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                desenho1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                desenho1MouseEntered(evt);
+            }
+        });
+        desenho1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                desenho1MouseMoved(evt);
+            }
+        });
+        desenho1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                desenho1FocusGained(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout desenho1Layout = new org.jdesktop.layout.GroupLayout(desenho1);
+        desenho1.setLayout(desenho1Layout);
+        desenho1Layout.setHorizontalGroup(
+            desenho1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 473, Short.MAX_VALUE)
+        );
+        desenho1Layout.setVerticalGroup(
+            desenho1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 300, Short.MAX_VALUE)
+        );
+
+        numCirclesText.setColumns(5);
+        numCirclesText.setText("1");
+        numCirclesText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                numCirclesTextActionPerformed(evt);
+            }
+        });
+
+        clear1.setText("Clear");
+        clear1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clear1ActionPerformed(evt);
+            }
+        });
+
+        x1.setText("x");
+
+        y1.setText("y");
+
+        jLabel7.setText("Coordinates");
+
+        jButton3.setText("Browse file...");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        hough1.setText("COMPUTE");
+        hough1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hough1ActionPerformed(evt);
+            }
+        });
+
+        numCircles.setText("# of circles:");
+
+        radiusText.setColumns(5);
+        radiusText.setText("50");
+
+        jLabel9.setText("Radius:");
+
+        msgLabel1.setForeground(new java.awt.Color(204, 0, 0));
+        msgLabel1.setText("Message:");
+
+        jLabel12.setText("Points in the circle:");
+
+        pointscircle1.setEnabled(false);
+        jScrollPane2.setViewportView(pointscircle1);
+
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(numCirclesText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(radiusText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jButton3)
+                            .add(jPanel2Layout.createSequentialGroup()
+                                .add(x1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(y1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(numCircles)
+                            .add(jLabel7)
+                            .add(jLabel9))))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(msgLabel1)
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(desenho1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 260, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 127, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+            .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                .add(jPanel2Layout.createSequentialGroup()
+                    .add(hough1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(189, 189, 189)
+                    .add(clear1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(jSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 763, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                        .add(hough1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(clear1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jButton3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 48, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jSeparator2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                        .add(desenho1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jPanel2Layout.createSequentialGroup()
+                            .add(jLabel12)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(jScrollPane2)))
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(jLabel7)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(x1)
+                            .add(y1))
+                        .add(18, 18, 18)
+                        .add(numCircles, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(numCirclesText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jLabel9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 16, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(radiusText, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(msgLabel1)
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Hough Transform", jPanel2);
+
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 777, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .add(layout.createSequentialGroup()
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 800, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(0, 12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .add(0, 0, Short.MAX_VALUE)
+                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -467,21 +632,112 @@ public class JFrame extends javax.swing.JFrame {
     	
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void houghActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_houghActionPerformed
+    private void desenho1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenho1MousePressed
+       //draw a point
+        Ass2.putpoint(desenho1.getGraphics(), evt.getX(), evt.getY(), Color.RED);
+        
+       // Ass2.putcircle(desenho.getGraphics(), evt.getX(), evt.getY(), 50, Color.BLACK);
+        
+        //put point on arraylist
+        pointList.add(evt.getPoint());
+    }//GEN-LAST:event_desenho1MousePressed
 
-    	HoughTransformUtil hough = new HoughTransformUtil(pointList, desenho.getSize().height, desenho.getSize().width, 50, 4);
+    private void desenho1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenho1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_desenho1MouseClicked
+
+    private void desenho1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenho1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_desenho1MouseEntered
+
+    private void desenho1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_desenho1MouseMoved
+       //get coordinates of cursor
+        x1.setText("x: "+evt.getPoint().x);
+        y1.setText("y: "+(int)((desenho1.getSize().getHeight() - evt.getPoint().y)));
+    }//GEN-LAST:event_desenho1MouseMoved
+
+    private void desenho1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_desenho1FocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_desenho1FocusGained
+
+    private void clear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear1ActionPerformed
+        pointList.removeAll(pointList);
+        desenho.removeAll();
+        desenho.repaint();
+        ((DefaultListModel)pointscircle.getModel()).removeAllElements();
+        smallannulus.setText("--");
+    }//GEN-LAST:event_clear1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    	desenho.repaint();
+    	final JFileChooser fc = new JFileChooser();
+    	fc.showOpenDialog(this);
+    	int i=0;
+    	
+    	pointList = new ArrayList<Point>();
+
+    	BufferedReader in = null;
+    	try {
+    		in = new BufferedReader(new FileReader(fc.getSelectedFile()));
+    	} catch (FileNotFoundException ex) {
+    		Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
+    	}
+    	String line;
+    	try {
+    		while((line = in.readLine()) != null)
+    		{
+    			i++;
+    			System.out.println(line);
+    			String temp[] = line.split(",");
+    			temp[0] = temp[0].trim();
+    			temp[1] = temp[1].trim();
+    			int x = Integer.parseInt(temp[0]);
+    			int y = (desenho.getSize().height - Integer.parseInt(temp[1]));
+    			try{
+    				//draw points
+    				//Ass2.putpoint(desenho.getGraphics(), x, y, Color.RED);
+    				
+    				//put points on list
+    				pointList.add(new Point(x,y));
+    				
+    			} catch(NumberFormatException n){
+    				JOptionPane.showMessageDialog(null, "You have some erro on input file: "+n.getMessage(), "Error on line: "+i, JOptionPane.INFORMATION_MESSAGE, null);
+    				return;
+    			}
+    		}
+    	} catch (IOException ex) {
+    		Logger.getLogger(JFrame.class.getName()).log(Level.SEVERE, null, ex);
+    	}
+    	
+    	SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				for(Point p :pointList) {
+					Ass2.putpoint(desenho.getGraphics(), p.x, p.y, Color.RED);
+				}
+			}
+		});
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void hough1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hough1ActionPerformed
+        HoughTransformUtil hough = new HoughTransformUtil(pointList, desenho1.getSize().height, desenho1.getSize().width, 50, 4);
     	
     	ArrayList<Circle> circles = hough.getCircles();
     	
     	if (circles.size() > 0) {
     		for (Circle c : circles) {
-    			Ass2.putcircle(desenho.getGraphics(), c.center.x, c.center.y, (int)c.radius, Color.GREEN);
+    			Ass2.putcircle(desenho1.getGraphics(), c.center.x, c.center.y, (int)c.radius, Color.GREEN);
     		}
     	}
     	else {
-    		msgLabel.setText("Circulo não encontrado");
+    		msgLabel1.setText("Circulo nï¿½o encontrado");
     	}
-    }//GEN-LAST:event_houghActionPerformed
+    }//GEN-LAST:event_hough1ActionPerformed
+
+    private void numCirclesTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numCirclesTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numCirclesTextActionPerformed
 
     /**
      * @param args the command line arguments
@@ -535,26 +791,43 @@ public class JFrame extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clear;
+    private javax.swing.JButton clear1;
     private javax.swing.JPanel desenho;
-    private javax.swing.JButton hough;
+    private javax.swing.JPanel desenho1;
+    private javax.swing.JButton hough1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField maxit;
     private javax.swing.JTextField maxw;
     private javax.swing.JTextField minp;
     private javax.swing.JLabel msgLabel;
+    private javax.swing.JLabel msgLabel1;
+    private javax.swing.JLabel numCircles;
+    private javax.swing.JTextField numCirclesText;
     private javax.swing.JList pointscircle;
+    private javax.swing.JList pointscircle1;
+    private javax.swing.JTextField radiusText;
     private javax.swing.JButton ransac;
     private javax.swing.JLabel smallannulus;
     private javax.swing.JLabel x;
+    private javax.swing.JLabel x1;
     private javax.swing.JLabel y;
+    private javax.swing.JLabel y1;
     // End of variables declaration//GEN-END:variables
 }
